@@ -8,6 +8,7 @@ let bodyParser = require('body-parser');
 var os = require('os');
 var http = require('http');
 var cors = require('cors');
+var compression = require('compression');
 
 
 // 引入 mongoose 配置文件,执行配置文件中的函数，以实现数据库的配置和 Model 的创建等
@@ -36,6 +37,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 // app.use(require('node-compass')({mode: 'expanded'}));
+app.use(compression()); //use compression
 app.use(express.static(path.join(__dirname, 'public'), {
 	etag: false, //资源标记
 	maxAge: 0,//30 days 后过期, 单位ms
