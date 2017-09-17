@@ -1,10 +1,10 @@
 {
-  "name": "X-Songtao-Admin",
+  "name": "blog-backend",
   "version": "1.0.1",
   "private": true,
   "scripts": {
-    "start": "pm2 start ./bin/www --watch; pm2 logs",
-    "restart": "pm2 restart ./bin/www --watch; pm2 logs",
+    "start": "pm2 start ./bin/www --watch",
+    "restart": "pm2 restart ./bin/www --watch",
     "stop": "pm2 stop all",
     "delete": "pm2 delete all",
     "monit": "pm2 monit"
