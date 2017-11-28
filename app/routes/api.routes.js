@@ -9,6 +9,7 @@ let fs = require('fs');
 
 let mongoose = require('mongoose');
 let $checkToken = require('../utils/checkToken.utils.js');
+let {uploadToUpyun} = require('../utils/uploadToUpyun');
 
 //数据模型
 let Users = mongoose.model('Users');
@@ -37,11 +38,11 @@ router.all('*', function (req, res, next) {
     if (method === 'get' || path.includes('register') || path.includes('login') || path.includes('upload') || (method === 'post' && path.includes('comment'))) {
         return next();
     } else {
-        let authorization = req.get("authorization");
+        let authorization = req.get('authorization');
         if (!!authorization) {
-            let token = authorization.split(" ")[1];
+            let token = authorization.split(' ')[1];
             $checkToken(token).then(function () {
-                console.log("*********token check success!**********")
+                console.log('*********token check success!**********')
                 return next();
             }, function (errObj) {
                 res.status(200);
@@ -50,8 +51,8 @@ router.all('*', function (req, res, next) {
         } else {
             res.status(200);
             res.send({
-                "code": "10",
-                "msg": "need token!"
+                'code': '10',
+                'msg': 'need token!'
             });
         }
     }
@@ -90,42 +91,65 @@ router.post('/imgupload', multipartMiddleware, function (req, res, next) {
     // console.log('req.files')
     // console.log(req)
     if (req.files) {
-        const UploadFilePath = './public/uploads/';
+        // const UploadFilePath = './public/uploads/';
         let imgInfo = req.files.uploadImg;
+        let arr = imgInfo.type.split('/');
+        let suffix = arr[arr.length - 1];
+        //新建文件名
+        let fileName = `${Date.parse(new Date())}.${suffix}`;
+        // let uploadPath = `${UploadFilePath}${fileName}`;
 
-        fs.readFile(imgInfo.path, function (err, data) {
-            if (err) {
-                DO_ERROR_RES(res);
-                return next();
-            }
-            let arr = imgInfo.type.split('/');
-            let suffix = arr[arr.length - 1];
-
-            //新建文件名
-            let fileName = `${Date.parse(new Date())}.${suffix}`;
-            let uploadPath = `${UploadFilePath}${fileName}`;
-
-            console.log('上传图片的存放位置:' + uploadPath);
-            fs.writeFile(uploadPath, data, function (err) {
-                if (err) {
-                    console.log("文件保存错误")
-                    console.log(err);
-                    res.status(200);
-                    res.send({
-                        "code": "2",
-                        "msg": "image upload failure!"
-                    });
-                    return;
-                }
-                console.log("文件保存成功");
-                res.status(200);
-                res.send({
-                    "code": "1",
-                    "msg": "image upload success! use config path and image name to find image.",
-                    "data": fileName
-                });
+        uploadToUpyun(fileName).then(res => {
+            console.log('文件上传成功');
+            res.status(200);
+            res.send({
+                'code': '1',
+                'msg': 'image upload success! use config path and image name to find image.',
+                'data': res
             });
-        });
+        }, err => {
+            console.log('文件上传失败')
+            console.log(err);
+            res.status(200);
+            res.send({
+                'code': '2',
+                'msg': 'image upload failure!'
+            });
+        })
+
+        // fs.readFile(imgInfo.path, function (err, data) {
+        //     if (err) {
+        //         DO_ERROR_RES(res);
+        //         return next();
+        //     }
+        //     let arr = imgInfo.type.split('/');
+        //     let suffix = arr[arr.length - 1];
+
+        //     //新建文件名
+        //     let fileName = `${Date.parse(new Date())}.${suffix}`;
+        //     let uploadPath = `${UploadFilePath}${fileName}`;
+
+        //     console.log('上传图片的存放位置:' + uploadPath);
+        //     fs.writeFile(uploadPath, data, function (err) {
+        //         if (err) {
+        //             console.log('文件保存错误')
+        //             console.log(err);
+        //             res.status(200);
+        //             res.send({
+        //                 'code': '2',
+        //                 'msg': 'image upload failure!'
+        //             });
+        //             return;
+        //         }
+        //         console.log('文件保存成功');
+        //         res.status(200);
+        //         res.send({
+        //             'code': '1',
+        //             'msg': 'image upload success! use config path and image name to find image.',
+        //             'data': fileName
+        //         });
+        //     });
+        // });
     } else {
         res.status(200);
         res.send(false);
