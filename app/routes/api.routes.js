@@ -99,13 +99,13 @@ router.post('/imgupload', multipartMiddleware, function (req, res, next) {
         let fileName = `${Date.parse(new Date())}.${suffix}`;
         // let uploadPath = `${UploadFilePath}${fileName}`;
 
-        uploadToUpyun(fileName).then(res => {
+        uploadToUpyun(fileName, imgInfo.path).then(ret => {
             console.log('文件上传成功');
             res.status(200);
             res.send({
                 'code': '1',
                 'msg': 'image upload success! use config path and image name to find image.',
-                'data': res
+                'data': ret
             });
         }, err => {
             console.log('文件上传失败')
