@@ -1,10 +1,9 @@
-const crypto = require('crypto');
 const request = require('request');
 const config = require('../config/config');
 const fs = require('fs');
 
 module.exports = {
-  uploadToUpyun(fileName, fileTmpPath) {
+  uploadToUpyun (fileName, fileTmpPath) {
     return new Promise((resolve, reject) => {
       var bucketUrl = config.upyunBucketPath;
       var visitUrl = config.upyunVisitUrl;

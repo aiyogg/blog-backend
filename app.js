@@ -18,6 +18,8 @@ let db = mongoose();
 let web = require('./app/routes/web.routes.js');
 // api入口
 let api = require('./app/routes/api.routes.js');
+// oauth 相关接口
+let oauth = require('./app/routes/oauth.routes.js');
 
 let app = express();
 app.use(cors());
@@ -50,6 +52,7 @@ app.use(express.static(path.join(__dirname, 'public'), {
 }));
 app.use('/', web);
 app.use('/api', api);
+app.use('/oauth', oauth);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

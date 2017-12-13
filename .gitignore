@@ -9,3 +9,4 @@ backup
 .svn
 uploads
 public/*
+app/config/config.js
