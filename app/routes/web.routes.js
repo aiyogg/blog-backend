@@ -26,7 +26,7 @@ router.use('*', cors(), function (req, res, next) {
 router.use(function (req, res, next) {
 	// console.log(req.path);
 	//对于访问api的路由,直接通过
-	if (req.path.includes('/api')) {
+	if (req.path.includes('/api') || req.path.includes('/oauth')) {
 		next();
 	} else {
 		//对于访问子页面的路由,跳转到启动页
