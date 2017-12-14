@@ -32,7 +32,8 @@ module.exports = {
           resolve();
           console.log('成功发布一条微博');
         } else {
-          reject(new Error(`Api wbShortenUrl called failed`));
+          console.log(body);
+          reject(new Error(`Api wbPostNewMsg called failed`));
           console.log(`微博 api 调用异常，状态码：${response.statusCode}`);
         }
       });

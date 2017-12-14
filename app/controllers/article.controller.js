@@ -220,9 +220,7 @@ module.exports = {
       article.save();
       // 更新tag used_num
       refreshTagUsedNum();
-      // 发条微博
-      socialSharing.wbPostNewMsg(`https://blog.chenteng.me/article/${_id}`,
-        `哇~，聪明又帅气的小伙子@呆萌阿腾 又发表了新的博客文章《${title}》,快来看看吧~`);
+      
       // 11-5新增，增加文章摘要存储，一行40字，200共5行
       article.abstract = getArticleContentToAbstract(article.content.substr(0, 300), 200);
       // 增加文章html字段存储
@@ -236,6 +234,9 @@ module.exports = {
         'msg': 'article add success!',
         'data': article
       });
+      // 发条微博
+      socialSharing.wbPostNewMsg(`https://blog.chenteng.me/article/${article._id}`,
+      `哇~，聪明又帅气的小伙子@呆萌阿腾 又发表了新的博客文章《${title}》,快来看看吧~`);
     }
   },
   /***
