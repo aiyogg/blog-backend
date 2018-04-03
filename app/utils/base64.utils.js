@@ -1,7 +1,7 @@
 /**
  * Created by xiangsongtao on 16/6/23.
  */
-var base64EncodeChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+var base64EncodeChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 var base64DecodeChars = new Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63, 52, 53, 54, 55, 56, 57,
@@ -15,7 +15,7 @@ function base64encode(str) {
     var c1, c2, c3;
     len = str.length;
     i = 0;
-    out = "";
+    out = '';
 
     while (i < len) {
         c1 = str.charCodeAt(i++) & 0xff;
@@ -23,7 +23,7 @@ function base64encode(str) {
         if (i == len) {
             out += base64EncodeChars.charAt(c1 >> 2);
             out += base64EncodeChars.charAt((c1 & 0x3) << 4);
-            out += "==";
+            out += '==';
             break
         }
 
@@ -33,7 +33,7 @@ function base64encode(str) {
             out += base64EncodeChars.charAt(c1 >> 2);
             out += base64EncodeChars.charAt(((c1 & 0x3) << 4) | ((c2 & 0xF0) >> 4));
             out += base64EncodeChars.charAt((c2 & 0xF) << 2);
-            out += "=";
+            out += '=';
             break
         }
 
@@ -51,54 +51,50 @@ function base64decode(str) {
     var i, len, out;
     len = str.length;
     i = 0;
-    out = "";
+    out = '';
 
     while (i < len) {
-        do
-        {
+        do {
             c1 = base64DecodeChars[str.charCodeAt(i++) & 0xff]
         } while (i < len && c1 == -1);
 
         if (c1 == -1)
-            break;
+            {break;}
 
-        do
-        {
+        do {
             c2 = base64DecodeChars[str.charCodeAt(i++) & 0xff]
         } while (i < len && c2 == -1);
 
         if (c2 == -1)
-            break;
+            {break;}
 
         out += String.fromCharCode((c1 << 2) | ((c2 & 0x30) >> 4));
 
-        do
-        {
+        do {
             c3 = str.charCodeAt(i++) & 0xff;
 
             if (c3 == 61)
-                return out;
+                {return out;}
 
             c3 = base64DecodeChars[c3]
         } while (i < len && c3 == -1);
 
         if (c3 == -1)
-            break;
+            {break;}
 
         out += String.fromCharCode(((c2 & 0XF) << 4) | ((c3 & 0x3C) >> 2));
 
-        do
-        {
+        do {
             c4 = str.charCodeAt(i++) & 0xff;
 
             if (c4 == 61)
-                return out;
+                {return out;}
 
             c4 = base64DecodeChars[c4]
         } while (i < len && c4 == -1);
 
         if (c4 == -1)
-            break;
+            {break;}
 
         out += String.fromCharCode(((c3 & 0x03) << 6) | c4)
     }

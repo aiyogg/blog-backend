@@ -4,9 +4,9 @@
  */
 let mongoose = require('mongoose');
 
-//数据库查询同一错误处理
+// 数据库查询同一错误处理
 let DO_ERROR_RES = require('../utils/DO_ERROE_RES.js');
-//MyInfo的数据模型
+// MyInfo的数据模型
 let Tags = mongoose.model('Tags');
 
 module.exports = {
@@ -18,9 +18,9 @@ module.exports = {
             }
             res.status(200);
             res.send({
-                "code": "1",
-                "msg": `find tag all success!`,
-                "data":docs
+                'code': '1',
+                'msg': `find tag all success!`,
+                'data': docs
             });
         })
     },
@@ -37,20 +37,20 @@ module.exports = {
             for (let i = 0, docLen = docs.length; docLen > i; i++) {
                 let tplCata = docs[i].catalogue_name.toString();
                 if (nowCata !== tplCata) {
-                    if(nowCata !== ''){
+                    if (nowCata !== '') {
                         tagsArr.push(cataObj);
                     }
 
                     nowCata = tplCata;
                     cataObj = {
-                        "name": nowCata,
-                        "data": []
+                        'name': nowCata,
+                        'data': []
                     };
                     cataObj.data.push(docs[i]);
                     if (docLen == i + 1) {
                         tagsArr.push(cataObj);
                     }
-                }else{
+                } else {
                     cataObj.data.push(docs[i]);
                     if (docLen == i + 1) {
                         tagsArr.push(cataObj);
@@ -59,9 +59,9 @@ module.exports = {
             }
             res.status(200);
             res.send({
-                "code": "1",
-                "msg": `find tag all with structure success!`,
-                "data":tagsArr
+                'code': '1',
+                'msg': `find tag all with structure success!`,
+                'data': tagsArr
             });
         });
     },
@@ -71,21 +71,20 @@ module.exports = {
                 DO_ERROR_RES(res);
                 return next();
             }
-            if (!!doc) {
+            if (doc) {
                 res.status(200);
                 res.send({
-                    "code": "1",
-                    "msg": `tag find success!`,
-                    "data": doc
+                    'code': '1',
+                    'msg': `tag find success!`,
+                    'data': doc
                 });
             } else {
                 res.status(200);
                 res.send({
-                    "code": "2",
-                    "msg": `tag non-exist!`
+                    'code': '2',
+                    'msg': `tag non-exist!`
                 });
             }
-
         })
     },
     add: function (req, res, next) {
@@ -94,16 +93,16 @@ module.exports = {
                 DO_ERROR_RES(res);
                 return next();
             }
-            if (!!doc) {
+            if (doc) {
                 res.status(200);
                 res.send({
-                    "code": "2",
-                    "msg": "tags added failure, tag already exist!",
-                    "data": doc._id
+                    'code': '2',
+                    'msg': 'tags added failure, tag already exist!',
+                    'data': doc._id
                 })
             } else {
-                //新增标签
-                let {name, catalogue_name} =  req.body;
+                // 新增标签
+                let {name, catalogue_name} = req.body;
                 let tagData = {
                     name: name,
                     catalogue_name: catalogue_name,
@@ -116,9 +115,9 @@ module.exports = {
                 tagData._id = tag._id;
                 res.status(200);
                 res.send({
-                    "code": "1",
-                    "msg": "tags add success!",
-                    "data": tagData
+                    'code': '1',
+                    'msg': 'tags add success!',
+                    'data': tagData
                 })
             }
         })
@@ -129,7 +128,7 @@ module.exports = {
                 DO_ERROR_RES(res);
                 return next();
             }
-            if (!!tag_orig) {
+            if (tag_orig) {
                 Tags.findOne({name: req.body.name}, function (err, doc) {
                     if (err) {
                         DO_ERROR_RES(res);
@@ -138,27 +137,26 @@ module.exports = {
                     if (!!doc && (doc._id.toString() !== tag_orig._id.toString())) {
                         res.status(200);
                         res.send({
-                            "code": "3",
-                            "msg": "tag name exist, please use another one!"
+                            'code': '3',
+                            'msg': 'tag name exist, please use another one!'
                         });
-                    }else{
+                    } else {
                         tag_orig.name = req.body.name;
                         tag_orig.catalogue_name = req.body.catalogue_name;
                         tag_orig.save();
                         res.status(200);
                         res.send({
-                            "code": "1",
-                            "msg": "tag edit success!",
-                            "data":tag_orig
+                            'code': '1',
+                            'msg': 'tag edit success!',
+                            'data': tag_orig
                         });
                     }
                 })
-
             } else {
                 res.status(200);
                 res.send({
-                    "code": "2",
-                    "msg": "tag non-exist or params error!"
+                    'code': '2',
+                    'msg': 'tag non-exist or params error!'
                 });
             }
         })
@@ -192,29 +190,23 @@ module.exports = {
             }
             res.status(200);
             res.send({
-                "code": "1",
-                "msg": `tag ${req.params.id} delete success!`
+                'code': '1',
+                'msg': `tag ${req.params.id} delete success!`
             });
         });
     },
-    getUsedTop:function (req, res, next) {
-        Tags.find({},{'name':1,'used_num':1}).sort('-used_num').limit(parseInt(req.params.topNum)).exec(function (err, docs) {
+    getUsedTop: function (req, res, next) {
+        Tags.find({}, {'name': 1, 'used_num': 1}).sort('-used_num').limit(parseInt(req.params.topNum)).exec(function (err, docs) {
             if (err) {
                 DO_ERROR_RES(res);
                 return next();
             }
             res.status(200);
             res.send({
-                "code": "1",
-                "msg": `find tag all success!`,
-                "data":docs
+                'code': '1',
+                'msg': `find tag all success!`,
+                'data': docs
             });
         })
-    },
+    }
 };
-
-
-
-
-
-

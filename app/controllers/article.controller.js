@@ -220,7 +220,7 @@ module.exports = {
       article.save();
       // 更新tag used_num
       refreshTagUsedNum();
-      
+
       // 11-5新增，增加文章摘要存储，一行40字，200共5行
       article.abstract = getArticleContentToAbstract(article.content.substr(0, 300), 200);
       // 增加文章html字段存储
