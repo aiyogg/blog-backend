@@ -19,6 +19,7 @@ module.exports = {
     let VisitInfo = new Statistic({ip, path, time});
     // 保存
     VisitInfo.save(function (err) {
+      if (err) { console.log(err); }
       // console.log('-----------------------')
       // console.log('--访问信息记录成功')
       // console.log('--ip:' + ip)
@@ -122,7 +123,7 @@ module.exports = {
           '$lt': end
         }
       }, function (err, count) {
-        console.error('Get count failed.', err);
+        if (err) { console.error('Get count failed.', err); }
         _result.push(count);
         cb && cb(count);
       })
@@ -177,6 +178,7 @@ module.exports = {
             .query({ip: doc.ip})
             .query({coor: 'bd09ll'})
             .end(function (err, data) {
+              if (err) { console.log(err); }
               var textObj = JSON.parse(data.text);
               if (parseInt(textObj.status) === 0) {
                 let _city = textObj.content.address_detail.city;
@@ -241,6 +243,7 @@ module.exports = {
           '$lt': _dayEnd
         }
       }, function (err, docs) {
+        if (err) { console.log(err); }
         // 以小时为单位
         let _end = new Date().getHours() + 1;
 

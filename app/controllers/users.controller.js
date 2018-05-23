@@ -100,7 +100,9 @@ module.exports = {
             login_time: new Date().getTime(),
             login_ip: user_ip
           });
-          user.save();
+          user.save().catch(err => {
+            if (err) { console.log(err); }
+          });
           res.status(200);
           // res.cookie('rememberme', '1', { maxAge: 900000})
           let _time = new Date().getTime();

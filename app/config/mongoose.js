@@ -43,6 +43,8 @@ module.exports = function () {
       }, // 心情
       personal_state: String, // 我的称述
       img_url: String // 头像imgurl
+  }, {
+    usePushEach: true
   }));
 
   // 访问统计
