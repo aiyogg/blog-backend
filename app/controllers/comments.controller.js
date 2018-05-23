@@ -14,7 +14,7 @@ let DO_ERROR_RES = require('../utils/DO_ERROE_RES.js');
  * 不是对文章的评论数做++处理，--处理也通用
  * 而是通过articleid找comment的count，之后再保存。2016/11/5
  * */
-function refreshArticleCommentNum(article_id) {
+function refreshArticleCommentNum(article_id, commentState) {
   return new Promise(function (resolve, reject) {
     Comments.count({article_id: article_id}, function (err, count) {
       if (err) {
@@ -25,7 +25,7 @@ function refreshArticleCommentNum(article_id) {
           reject('refreshArticle: find article by article_id failed!');
         }
         if (article) {
-          article.comment_num = parseInt(count);
+          article.comment_num = parseInt(commentState === false ? count : --count);
           article.save(function (err) {
             resolve();
           });
@@ -168,6 +168,7 @@ module.exports = {
     function removeComment(nextId, cb) {
       if (nextId.length > 0) {
         Comments.remove({_id: nextId.pop()}, function (err) {
+          if (err) { console.log(err) }
           removeComment(nextId, cb)
         });
       } else {
@@ -258,6 +259,7 @@ module.exports = {
     })
     .sort('-time')
     .exec(function (err, commentList) {
+      if (err) { console.log(err) }
       res.status(200);
       res.send({
         'code': '1',
@@ -319,37 +321,29 @@ module.exports = {
         DO_ERROR_RES(res);
         return next();
       }
-      refreshArticleCommentNum(article_id).then(function () {
-        if (comment.article_id.toString() !== comment.pre_id.toString()) {
-          // 如果当前的评论是个子评论
-          // 需要修改父评论的next_id信息，使其指向子评论
-          addToPreComment(comment).then(function () {
-            res.status(200);
-            res.send({
-              'code': '1',
-              'msg': 'comment create success, pre comment edit success!'
-            });
-          }, function (errMsg) {
-            res.status(200);
-            res.send({
-              'code': '2',
-              'msg': errMsg
-            });
-          })
-        } else {
+      if (comment.article_id.toString() !== comment.pre_id.toString()) {
+        // 如果当前的评论是个子评论
+        // 需要修改父评论的next_id信息，使其指向子评论
+        addToPreComment(comment).then(function () {
           res.status(200);
           res.send({
             'code': '1',
-            'msg': 'comment create success!'
+            'msg': 'comment create success, pre comment edit success!'
           });
-        }
-      }, function (errMsg) {
+        }, function (errMsg) {
+          res.status(200);
+          res.send({
+            'code': '2',
+            'msg': errMsg
+          });
+        })
+      } else {
         res.status(200);
         res.send({
-          'code': '2',
-          'msg': errMsg
+          'code': '1',
+          'msg': 'comment create success!'
         });
-      });
+      }
     });
   },
 
@@ -391,11 +385,25 @@ module.exports = {
       if (comment) {
         comment.state = !comment.state;
         // 保存
-        comment.save();
-        res.status(200);
-        res.send({
-          'code': '1',
-          'msg': 'comment state change success!'
+        comment.save(function (err) {
+          if (err) {
+            DO_ERROR_RES(res);
+            return next();
+          }
+          // 更新文章的评论数
+          refreshArticleCommentNum(comment.article_id, comment.state).then(function () {
+            res.status(200);
+            res.send({
+              'code': '1',
+              'msg': 'comment state change success!'
+            });
+          }, function (errMsg) {
+            res.status(200);
+            res.send({
+              'code': '2',
+              'msg': errMsg
+            });
+          });
         });
       } else {
         res.status(200);
