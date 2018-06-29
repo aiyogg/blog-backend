@@ -130,7 +130,7 @@ module.exports = {
       }, function (err, article) {
         if (err) {
           DO_ERROR_RES(res);
-          return next();
+          return;
         }
         if (article) {
           let {
@@ -174,14 +174,14 @@ module.exports = {
           }, function (err, count) {
             if (err) {
               DO_ERROR_RES(res);
-              return next();
+              return;
             }
             article.comment_num = parseInt(count);
             // 保存
             article.save(function (err) {
               if (err) {
                 DO_ERROR_RES(res);
-                return next();
+                return;
               }
               res.status(200);
               res.send({
@@ -255,7 +255,7 @@ module.exports = {
       .exec(function (err, docs) {
         if (err) {
           DO_ERROR_RES(res);
-          return next();
+          return;
         }
         // console.log(docs)
         res.status(200);
@@ -279,7 +279,7 @@ module.exports = {
     }).exec(function (err, docs) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       // docs不为空,最少为[]
       // 文章摘要在文章保存阶段处理
@@ -306,7 +306,7 @@ module.exports = {
     }).exec(function (err, doc) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       if (doc) {
         // 阅读数++
@@ -314,7 +314,7 @@ module.exports = {
         doc.save(function (err) {
           if (err) {
             DO_ERROR_RES(res);
-            return next();
+            return;
           }
           // 文章的html内容在html字段中，获取文章时不需要再进行编译转换
           // doc.content = marked(doc.content);
@@ -343,7 +343,7 @@ module.exports = {
     }).exec(function (err, doc) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       if (doc) {
         res.status(200);
@@ -368,7 +368,7 @@ module.exports = {
     }, function (err, article) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       if (article) {
         // 减去tags的引用
@@ -390,12 +390,12 @@ module.exports = {
         }, function (err) {
           if (err) {
             DO_ERROR_RES(res);
-            return next();
+            return;
           }
           article.remove(function (err) {
             if (err) {
               DO_ERROR_RES(res);
-              return next();
+              return;
             }
             res.status(200);
             res.send({
@@ -426,7 +426,7 @@ module.exports = {
     }).sort('-publish_time').exec(function (err, docs) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       let historyArr = [];
       let yearObj = {};
@@ -512,7 +512,7 @@ module.exports = {
     }).exec(function (err, docs) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       // docs不为空,最少为[]
       docs.forEach(function (article) {
@@ -542,7 +542,7 @@ module.exports = {
     }).sort('-publish_time').limit(_topNum).exec(function (err, latestTopDocs) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       Articles.find({
         state: true
@@ -552,7 +552,7 @@ module.exports = {
       }).sort('-read_num').limit(_topNum).exec(function (err, readTopDocs) {
         if (err) {
           DO_ERROR_RES(res);
-          return next();
+          return;
         }
         Tags.find({}, {
           'name': 1,
@@ -560,7 +560,7 @@ module.exports = {
         }).sort('-used_num').limit(10).exec(function (err, tagTopDocs) {
           if (err) {
             DO_ERROR_RES(res);
-            return next();
+            return;
           }
           res.status(200);
           res.send({
@@ -627,7 +627,7 @@ module.exports = {
     }).sort('-used_num').limit(parseInt(req.params.topNum)).exec(function (err, docs) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       res.status(200);
       res.send({

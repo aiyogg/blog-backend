@@ -19,7 +19,7 @@ module.exports = {
     Users.findOne({username: req.body.username}, function (err, user) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       // 如果没有数据,则增加is_admin: user.is_admin,
       if (!user) {
@@ -87,7 +87,7 @@ module.exports = {
       Users.findOne({username: username}, function (err, user) {
         if (err) {
           DO_ERROR_RES(res);
-          return next();
+          return;
         }
 
         var _salt_left = md5(`${user_ip}|${loginReqTime}`);
@@ -134,7 +134,7 @@ module.exports = {
     Users.findOne({_id: _id}, function (err, user) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       // 有用户数据且密码正确
       if (user) {
@@ -168,7 +168,7 @@ module.exports = {
     Users.find({}, {'username': 0, 'password': 0, 'is_admin': 0, 'login_info': 0, '__v': 0}, function (err, users) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       res.send({
         'code': '1',
@@ -190,7 +190,7 @@ module.exports = {
     }, function (err, user) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       // 将我的介绍由markdown转化为html输出
       // marked
@@ -233,7 +233,7 @@ module.exports = {
     }, function (err, user) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
 
       if (user) {
@@ -256,7 +256,7 @@ module.exports = {
     Users.findOne({_id: req.body._id}, function (err, user) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       // 如果没有数据,则增加
       if (!user) {
@@ -291,7 +291,7 @@ module.exports = {
     Users.remove({_id: req.params.id}, function (err) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       res.status(200);
       res.send({

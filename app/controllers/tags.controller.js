@@ -14,7 +14,7 @@ module.exports = {
         Tags.find({}, function (err, docs) {
             if (err) {
                 DO_ERROR_RES(res);
-                return next();
+                return;
             }
             res.status(200);
             res.send({
@@ -28,7 +28,7 @@ module.exports = {
         Tags.find({}).sort('catalogue_name').exec(function (err, docs) {
             if (err) {
                 DO_ERROR_RES(res);
-                return next();
+                return;
             }
             let tagsArr = [];
             let cataObj = {};
@@ -69,7 +69,7 @@ module.exports = {
         Tags.findOne({_id: req.params.id}, function (err, doc) {
             if (err) {
                 DO_ERROR_RES(res);
-                return next();
+                return;
             }
             if (doc) {
                 res.status(200);
@@ -91,7 +91,7 @@ module.exports = {
         Tags.findOne({name: req.body.name}, function (err, doc) {
             if (err) {
                 DO_ERROR_RES(res);
-                return next();
+                return;
             }
             if (doc) {
                 res.status(200);
@@ -126,13 +126,13 @@ module.exports = {
         Tags.findOne({_id: req.body._id}, function (err, tag_orig) {
             if (err) {
                 DO_ERROR_RES(res);
-                return next();
+                return;
             }
             if (tag_orig) {
                 Tags.findOne({name: req.body.name}, function (err, doc) {
                     if (err) {
                         DO_ERROR_RES(res);
-                        return next();
+                        return;
                     }
                     if (!!doc && (doc._id.toString() !== tag_orig._id.toString())) {
                         res.status(200);
@@ -186,7 +186,7 @@ module.exports = {
         Tags.remove({_id: req.params.id}, function (err) {
             if (err) {
                 DO_ERROR_RES(res);
-                return next();
+                return;
             }
             res.status(200);
             res.send({
@@ -199,7 +199,7 @@ module.exports = {
         Tags.find({}, {'name': 1, 'used_num': 1}).sort('-used_num').limit(parseInt(req.params.topNum)).exec(function (err, docs) {
             if (err) {
                 DO_ERROR_RES(res);
-                return next();
+                return;
             }
             res.status(200);
             res.send({

@@ -42,7 +42,7 @@ module.exports = {
     Comments.find({}, function (err, docs) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       res.send({
         'code': '1',
@@ -72,7 +72,7 @@ module.exports = {
             if (err) {
               DO_ERROR_RES(res);
               reject();
-              return next();
+              return;
             }
             recordLen++;
             if (comment) {
@@ -94,7 +94,7 @@ module.exports = {
     Comments.findOne({_id: req.params.comment_id}, function (err, comment) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       if (comment) {
         CommentsArr.push(comment);
@@ -136,7 +136,7 @@ module.exports = {
     Comments.findOne({_id: req.body._id}, function (err, comment) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       if (comment) {
         let {name, email, time, content, ip, state} = req.body;
@@ -179,7 +179,7 @@ module.exports = {
     Comments.findOne({_id: req.params.id}, function (err, comment) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       if (comment) {
         let articleId = comment.article_id;
@@ -188,7 +188,7 @@ module.exports = {
         comment.remove(function (err) {
           if (err) {
             DO_ERROR_RES(res);
-            return next();
+            return;
           }
           refreshArticleCommentNum(articleId).then(function () {
             if (nextId.length > 0) {
@@ -205,7 +205,7 @@ module.exports = {
               Comments.findOne({_id: preId}, function (err, preComment) {
                 if (err) {
                   DO_ERROR_RES(res);
-                  return next();
+                  return;
                 }
                 if (!!preComment && preComment.next_id > 0) {
                   // 更新的是子评论,需要到父级去除自己的信息
@@ -213,7 +213,7 @@ module.exports = {
                   preComment.save(function (err) {
                     if (err) {
                       DO_ERROR_RES(res);
-                      return next();
+                      return;
                     }
                     res.status(200);
                     res.send({
@@ -319,7 +319,7 @@ module.exports = {
     comment.save(function (err) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       if (comment.article_id.toString() !== comment.pre_id.toString()) {
         // 如果当前的评论是个子评论
@@ -353,7 +353,7 @@ module.exports = {
     Comments.findOne({_id: req.body._id}, function (err, comment) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       if (comment) {
         // 数据写入并保存
@@ -380,7 +380,7 @@ module.exports = {
     Comments.findOne({_id: req.body._id}, function (err, comment) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       if (comment) {
         comment.state = !comment.state;
@@ -388,7 +388,7 @@ module.exports = {
         comment.save(function (err) {
           if (err) {
             DO_ERROR_RES(res);
-            return next();
+            return;
           }
           // 更新文章的评论数
           refreshArticleCommentNum(comment.article_id, comment.state).then(function () {

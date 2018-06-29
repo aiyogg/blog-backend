@@ -31,14 +31,14 @@ router.use(function (req, res, next) {
     // console.log('from api dir 访问了主页！！')
     // res.set('Cache-Control', 'no-cache');
     res.set('Content-Type', 'text/html');
-    res.sendfile('public/index.html');
+    res.sendFile('public/index.html');
   }
 });
 /* GET 前端显示-blog home page. 前后端合并 */
 router.all('/', function (req, res, next) {
   res.set('Cache-Control', 'no-cache');
   res.set('Content-Type', 'text/html');
-  res.sendfile('public/index.html');
+  res.sendFile('public/index.html');
 });
 
 module.exports = router;

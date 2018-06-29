@@ -50,7 +50,7 @@ module.exports = {
     Statistic.find({}, function (err, docs) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       res.status(200);
       res.send({
@@ -64,7 +64,7 @@ module.exports = {
     Statistic.remove({}, function (err, docs) {
       if (err) {
         DO_ERROR_RES(res);
-        return next();
+        return;
       }
       res.send({
         'code': '1',
@@ -158,7 +158,7 @@ module.exports = {
       }, function (err, docs) {
         if (err) {
           DO_ERROR_RES(res);
-          return next();
+          return;
         }
         let _uniqueObj = {};
         let _uniqueArr = [];

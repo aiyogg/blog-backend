@@ -35,14 +35,14 @@ router.all('*', function (req, res, next) {
     let method = req.method.toLocaleLowerCase();
     let path = req.path.toString();
     if (method === 'get' || path.includes('register') || path.includes('login') || path.includes('upload') || (method === 'post' && path.includes('comment'))) {
-        return next();
+        return;
     } else {
         let authorization = req.get('authorization');
         if (authorization) {
             let token = authorization.split(' ')[1];
             $checkToken(token).then(function () {
                 console.log('*********token check success!**********')
-                return next();
+                return;
             }, function (errObj) {
                 res.status(200);
                 res.send(errObj);
@@ -117,7 +117,7 @@ if (req.files) {
     // fs.readFile(imgInfo.path, function (err, data) {
     //     if (err) {
     //         DO_ERROR_RES(res);
-    //         return next();
+    //         return;
     //     }
     //     let arr = imgInfo.type.split('/');
     //     let suffix = arr[arr.length - 1];

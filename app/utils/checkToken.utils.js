@@ -27,7 +27,7 @@ function checkToken(token) {
         if (err) {
           DO_ERROR_RES(res);
           reject();
-          return next();
+          return;
         }
         if (doc) {
           if (doc.is_admin) {
