@@ -35,14 +35,14 @@ router.all('*', function (req, res, next) {
     let method = req.method.toLocaleLowerCase();
     let path = req.path.toString();
     if (method === 'get' || path.includes('register') || path.includes('login') || path.includes('upload') || (method === 'post' && path.includes('comment'))) {
-        return;
+        next();
     } else {
         let authorization = req.get('authorization');
         if (authorization) {
             let token = authorization.split(' ')[1];
             $checkToken(token).then(function () {
-                console.log('*********token check success!**********')
-                return;
+                console.log('*********token check success!**********');
+                next();
             }, function (errObj) {
                 res.status(200);
                 res.send(errObj);
