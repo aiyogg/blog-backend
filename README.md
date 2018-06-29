@@ -1,9 +1,5 @@
-Blog后端项目
+FEDT-Blog 后端项目
 ===
-
-> 这个是Blog项目的后端node框架，Fork自[此仓库](https://github.com/xiangsongtao/X-SONGTAO)
-
-
 
 项目结构
 ---
@@ -34,7 +30,7 @@ Blog后端项目
 4. 进入项目根根目录执行`npm install` ,安装各种npm的module；
 5. 进入app/config/config.js修改数据库配置信息
 6. 进入public/web/config.js修改web的配置信息，详情如下：
-	- url: API访问根目录（http://blog.fedt.xin）
+	- url: API访问根目录（http://blog.chenteng.me）
 	- MY_INFO_ID: 我的个人资料的_id
 	- MY: 我的信息，主要使用在评论回复上显示
 	- EMAIL: 我的邮箱，主要使用在评论回复上显示
