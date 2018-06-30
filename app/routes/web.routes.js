@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var cors = require('cors');
+var path = require('path');
 let getClientIp = require('../utils/getClientIp.utils.js');
 
 let mongoose = require('mongoose');
@@ -31,14 +32,14 @@ router.use(function (req, res, next) {
     // console.log('from api dir 访问了主页！！')
     // res.set('Cache-Control', 'no-cache');
     res.set('Content-Type', 'text/html');
-    res.sendFile('public/index.html');
+    res.sendFile(path.resolve(__dirname, '../../public/index.html'));
   }
 });
 /* GET 前端显示-blog home page. 前后端合并 */
 router.all('/', function (req, res, next) {
   res.set('Cache-Control', 'no-cache');
   res.set('Content-Type', 'text/html');
-  res.sendFile('public/index.html');
+  res.sendFile(path.resolve(__dirname, '../../public/index.html'));
 });
 
 module.exports = router;
