@@ -93,7 +93,7 @@ if (req.files) {
     let arr = imgInfo.type.split('/');
     let suffix = arr[arr.length - 1];
     // 新建文件名
-    let fileName = `${Date.parse(new Date())}.${suffix}`;
+    let fileName = `${Math.random().toString(36).substring(2)}-${Date.parse(new Date())}.${suffix}`;
     // let uploadPath = `${UploadFilePath}${fileName}`;
 
     uploadToUpyun(fileName, imgInfo.path).then(ret => {
