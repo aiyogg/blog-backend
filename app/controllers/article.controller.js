@@ -206,7 +206,8 @@ module.exports = {
         publish_time,
         tags,
         state,
-        content
+        content,
+        needshare
       } = req.body;
       let article = new Articles({
         title,
@@ -235,8 +236,10 @@ module.exports = {
         'data': article
       });
       // 发条微博
-      socialSharing.wbPostNewMsg(`https://blog.chenteng.me/article/${article._id}`,
-      `哇~，聪明又帅气的小伙子@呆萌阿腾 又发表了新的博客文章《${title}》,快来看看吧~`);
+      if (needshare) {
+        socialSharing.wbPostNewMsg(`https://blog.chenteng.me/article/${article._id}`,
+        `哇~，聪明又帅气的小伙子@呆萌阿腾 又发表了新的博客文章《${title}》,快来看看吧~`);
+      }
     }
   },
   /***
