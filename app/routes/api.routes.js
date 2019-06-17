@@ -85,9 +85,9 @@ router.delete('/user/:id', UsersController.delete);
  * */
 // 之后还需要uuid找图片,图片压缩,裁剪的功能
 router.post('/imgupload', multipartMiddleware, function (req, res, next) {
-  // console.log('req.files')
-  // console.log(req)
-if (req.files) {
+    // console.log('req.files')
+    // console.log(req)
+    if (req.files) {
     // const UploadFilePath = './public/uploads/';
     let imgInfo = req.files.uploadImg;
     let arr = imgInfo.type.split('/');
@@ -96,7 +96,7 @@ if (req.files) {
     let fileName = `${Math.random().toString(36).substring(2)}-${Date.parse(new Date())}.${suffix}`;
     // let uploadPath = `${UploadFilePath}${fileName}`;
 
-    uploadToUpyun(fileName, imgInfo.path).then(ret => {
+    uploadToUpyun(fileName, imgInfo).then(ret => {
       console.log('文件上传成功');
       res.status(200);
       res.send({

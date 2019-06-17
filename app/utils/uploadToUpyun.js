@@ -3,7 +3,7 @@ const config = require('../config/config');
 const fs = require('fs');
 
 module.exports = {
-  uploadToUpyun (fileName, fileTmpPath) {
+  uploadToUpyun (fileName, { path: fileTmpPath, type }) {
     return new Promise((resolve, reject) => {
       var bucketUrl = config.upyunBucketPath;
       var visitUrl = config.upyunVisitUrl;
@@ -16,7 +16,8 @@ module.exports = {
         url: bucketUrl + fileName,
         method: method,
         headers: {
-          'Authorization': `Basic ${auth}`
+          'Authorization': `Basic ${auth}`,
+          'content-type': type
         },
         encoding: null,
         body: fs.createReadStream(fileTmpPath)
